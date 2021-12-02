@@ -29,22 +29,6 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.IMAGE_NAME }}
-        
-      - name: Log into registry ${{ env.GITHUB_REGISTRY }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.GITHUB_REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image to ${{ env.GITHUB_REGISTRY }}
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
           
       - name: Log into registry ${{ env.DOCKERHUB_REGISTRY }}
         if: github.event_name != 'pull_request'
