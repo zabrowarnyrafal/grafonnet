@@ -18,7 +18,7 @@ RUN mkdir -p /app/src && \
 RUN tar xvzf jsonnet.tar.gz -C /app/src --strip-components=1 && \
     rm /app/src/jsonnet.tar.gz
 
-RUN build -ldflags="-w -s" -v ./cmd/jsonnet
+RUN go build -ldflags="-w -s" -v ./cmd/jsonnet
 
 RUN cp -aiv jsonnet /app && rm -fR /app/src
 
