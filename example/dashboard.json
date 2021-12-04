@@ -1,0 +1,11 @@
+{
+   "description": "dashboard description",
+   "editable": true,
+   "graphTooltip": 0,
+   "panels": [ ],
+   "schemaVersion": 25,
+   "style": "dark",
+   "tags": [
+      "some_tag"
+   ]
+}
