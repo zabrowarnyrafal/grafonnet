@@ -1,3 +1,4 @@
+# BUILDER
 FROM golang:1.16-alpine3.14 AS builder
 
 ARG JSONNET_VERSION=0.17.0
@@ -7,15 +8,21 @@ RUN apk upgrade --no-cache --update && \
 
 WORKDIR /app/src
 
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
 RUN mkdir -p /app/src && \
     wget https://github.com/google/go-jsonnet/archive/refs/tags/v${JSONNET_VERSION}.tar.gz -O /app/src/jsonnet.tar.gz
 RUN tar xvzf jsonnet.tar.gz -C /app/src --strip-components=1 && \
     rm /app/src/jsonnet.tar.gz
 
-RUN go build -v ./cmd/jsonnet
+RUN build -ldflags="-w -s" -v ./cmd/jsonnet
 
 RUN cp -aiv jsonnet /app && rm -fR /app/src
 
+# RUNNER
 FROM alpine:3.14 AS runner
 
 COPY --from=builder /app/jsonnet /opt/jsonnet/jsonnet
